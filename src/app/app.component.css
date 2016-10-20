@@ -1,8 +1,18 @@
 html, body{
   height: 100%;
-  font-family: Arial, Helvetica, sans-serif
+  font-family: Catamaran,Helvetica,Arial,sans-serif;
+  margin:0;
 }
 
 span.active {
   background-color: gray;
+}
+
+h1 {
+  font-size:xxx-large;
+  font-size:-webkit-xxx-large;
+}
+
+h5 {
+  font-weight: 300;
 }
