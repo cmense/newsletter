@@ -1,4 +1,4 @@
-<div class="card-container">
+<!--<div class="card-container">
   <h1 x-large class="sample-content">Your Content Here</h1>
 
   <div>
@@ -27,15 +27,35 @@
 
       <button md-raised-button color="primary">Submit Value</button>
     </form>
-    <!--
-        <input type="text" [value]="localState.value" (input)="localState.value = $event.target.value" autofocus>
-        Rather than wiring up two-way data-binding ourselves with [value] and (input)
-        we can use Angular's [(ngModel)] syntax
-        <input type="text" name="textInput" [(ngModel)]="localState.value" autofocus>
-      -->
-
     <pre>this.localState = {{ localState | json }}</pre>
 
   </div>
 
+</div>
+-->
+
+<div class="container" layout="row" flex>
+	<div flex="40" layout="column">
+		<md-card id="inputs">
+			<md-card-title>General Section</md-card-title>
+			<md-card-content layout="column">
+				<md-input placeholder="Heading" [(ngModel)]="email.general.heading"></md-input>
+				<md-input placeholder="Subheading" [(ngModel)]="email.general.subheading"></md-input>
+				<md-input placeholder="Logo-Link"></md-input>
+			</md-card-content>
+
+			<md-card-title>Introduction</md-card-title>
+			<md-card-content>
+				<md-input placeholder="Heading"></md-input>
+			</md-card-content>
+		</md-card>
+	</div>
+	<div flex="60">
+		<md-card>
+			<md-card-title>Preview</md-card-title>
+			<md-card-content>
+				<email-template [email]="email"></email-template>
+			</md-card-content>
+		</md-card>
+	</div>
 </div>

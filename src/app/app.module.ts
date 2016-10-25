@@ -16,10 +16,11 @@ import { AppComponent } from './app.component';
 import { APP_RESOLVER_PROVIDERS } from './app.resolver';
 import { AppState, InternalStateType } from './app.service';
 import { HomeComponent } from './home';
+import { EmailTemplateComponent } from './email-template';
 import { NoContentComponent } from './no-content';
 import { XLarge } from './home/x-large';
-import {FlexDirective} from './share/flex.directive';
-import {LayoutDirective} from './share/layout.directive';
+import { FlexDirective } from './share/flex.directive';
+import { LayoutDirective } from './share/layout.directive';
 
 // Application wide providers
 const APP_PROVIDERS = [
@@ -37,10 +38,11 @@ type StoreType = {
  * `AppModule` is the main entry point into Angular2's bootstraping process
  */
 @NgModule({
-  bootstrap: [ AppComponent ],
+  bootstrap: [AppComponent],
   declarations: [
     AppComponent,
     HomeComponent,
+    EmailTemplateComponent,
     NoContentComponent,
     XLarge,
     FlexDirective,
@@ -59,7 +61,7 @@ type StoreType = {
   ]
 })
 export class AppModule {
-  constructor(public appRef: ApplicationRef, public appState: AppState) {}
+  constructor(public appRef: ApplicationRef, public appState: AppState) { }
 
   hmrOnInit(store: StoreType) {
     if (!store || !store.state) return;
@@ -85,7 +87,7 @@ export class AppModule {
     // recreate root elements
     store.disposeOldHosts = createNewHosts(cmpLocation);
     // save input values
-    store.restoreInputValues  = createInputTransfer();
+    store.restoreInputValues = createInputTransfer();
     // remove styles
     removeNgStyles();
   }

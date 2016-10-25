@@ -8,6 +8,16 @@ span.active {
   background-color: gray;
 }
 
+header {
+  background-color:palegreen;
+  padding: 100px 0;
+}
+
+footer {
+  background-color:palegreen;
+  padding: 100px 0;
+}
+
 h1 {
   font-size:xxx-large;
   font-size:-webkit-xxx-large;

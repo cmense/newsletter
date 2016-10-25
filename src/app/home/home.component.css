@@ -1,1 +1,7 @@
-/*styles for home content only*/
+.container div {
+    margin: 16px;
+}
+
+#inputs {
+    height:100%;
+}

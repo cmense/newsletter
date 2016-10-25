@@ -58,4 +58,8 @@ npm-debug.log
 
 # IDE #
 .idea/
+.vscode/
 *.swp
+
+# Github #
+gh-pages/
