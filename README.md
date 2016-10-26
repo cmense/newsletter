@@ -7,14 +7,13 @@ Free, simple Newsletter Generator for creating nice Newsletter within minutes. S
 Have fun with it.
 ___
 
-## Usage
+## Get Started
 
 <p align="center">
   <a href="https://delsner.github.io/newsletter" target="_blank">
     <img width="438" alt="Screenshot" src="https://delsner.github.io/newsletter/assets/img/newsletter.png">
   </a>
 </p>
-
 
 ___
 
