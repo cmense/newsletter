@@ -1,210 +1,114 @@
-import { Component, Input, ElementRef } from '@angular/core';
-
-import { AppState } from '../app.service';
+import { Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'email-template',
-  templateUrl: './email-template.component.html',
+    selector: 'email-template',
+    templateUrl: './email-template.component.html',
+    styleUrls:['./email-template.component.css']
 })
 export class EmailTemplateComponent {
-  // Set our default values
-  localState = { value: '' };
-  @Input() email = {
-    general: {
-      heading: "test",
-      subheading: "test"
+    @Input() email = {
+        meta:{},
+        general: {},
+        colors: {},
+        introduction: {},
+        sections: [],
+        bottom: {},
+        imprint: {}
+    };
+    config: string;
+
+    constructor() {
     }
-  };
-  content = "";
-  htmlElement: ElementRef;
-  
 
-  // TypeScript public modifiers
-  constructor(public appState: AppState, public el: ElementRef) {
-    this.htmlElement = el;
-  }
+    ngOnInit() {
+    }
 
+    getJson() {
+        return JSON.stringify(this.email);
+    }
 
-  ngOnInit() {
+    setJson() {
+        let cfg = JSON.parse(this.config);
+        Object.keys(this.email).forEach((key) => {
+            this.email[key] = cfg[key];
+        });
+    }
 
-  }
-  
-  downloadHtml() {
-    console.log(this.getHtmlEmailContent());
-  }
-
-  getStyleContent(){
-      return `body {
-            margin: 0;
-            padding: 0;
-            min-width: 100%!important;
-        }
-        
-        .content {
-            width: 100%;
-            max-width: 600px;
-        }
-        
-        @media only screen and (min-device-width: 601px) {
-            .content {
-                width: 600px !important;
-            }
-        }
-        
-        .header {
-            padding: 20px 30px 20px 30px;
-        }
-        
-        .col275 {
-            width: 275px!important;
-        }
-        
-        .subhead {
-            font-size: 15px;
-            color: {{email.general.color}};
-            font-family: sans-serif;
-            letter-spacing: 10px;
-        }
-        
-        .h1 {
-            font-size: 33px;
-            line-height: 38px;
-            font-weight: bold;
-        }
-        
-        .h1,
-        .h2,
-        .h3 {
-            color: #12569E;
-            font-family: sans-serif;
-        }
-        
-        .bodycopy {
-            color: #153643;
-            font-family: sans-serif;
-        }
-        
-        .innerpadding {
-            padding: 30px 30px 30px 30px;
-        }
-        
-        .borderbottom {
-            border-bottom: 1px solid #f2eeed;
-        }
-        
-        .h2 {
-            padding: 0 0 15px 0;
-            font-size: 24px;
-            line-height: 28px;
-            font-weight: bold;
-        }
-        
-        .h3 {
-            padding: 0 0 5px 0;
-            font-size: 20px;
-            line-height: 24px;
-            font-weight: bold;
-        }
-        
-        .bodycopy {
-            font-size: 16px;
-            line-height: 22px;
-        }
-        
-        .button {
-            text-align: center;
-            font-size: 14px;
-            font-family: sans-serif;
-            font-weight: bold;
-            padding: 0 30px 0 30px;
-        }
-        
-        .button a {
-            color: #ffffff;
-            text-decoration: none;
-        }
-        
-        @media only screen and (min-device-width: 601px) {
-            .content {
-                width: 600px !important;
-            }
-            .col425 {
-                width: 425px!important;
-            }
-            .col380 {
-                width: 380px!important;
-            }
-        }
-        
-        img {
-            height: auto;
-        }
-        
-        .footer {
-            padding: 20px 30px 15px 30px;
-        }
-        
-        .footercopy {
-            font-family: sans-serif;
-            font-size: 14px;
-            color: #ffffff;
-        }
-        
-        .footercopy a {
-            color: #ffffff;
-            text-decoration: underline;
-        }
-        
-        @media only screen and (max-width: 550px),
-        screen and (max-device-width: 550px) {
-            body[yahoo] .buttonwrapper {
-                background-color: transparent!important;
-            }
-            body[yahoo] .button a {
-                background-color: #ADACB2;
-                padding: 15px 15px 13px!important;
-                display: block!important;
-            }
-        }
-        
-        body[yahoo] .unsubscribe {
-            display: block;
-            margin-top: 20px;
-            padding: 10px 50px;
-            background: #2f3942;
-            border-radius: 5px;
-            text-decoration: none!important;
-            font-weight: bold;
-            width: 70px;
-        }
-        
-        body[yahoo] .hide {
-            display: none!important;
-        }`;
-  }
-
-  getHeadContent() {
-      return `<head>
+    getHeadContent() {
+        return `<head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>${this.email.general.heading}</title>
-    <style type="text/css">
-     ${this.getStyleContent()}   
-    </style>
+    <title>${this.email.meta.heading}</title>
     </head>`;
-  }
+    }
 
-  getHtmlEmailContent() {
-      return `<html xmlns="http://www.w3.org/1999/xhtml">
+    getHtmlEmailContent() {
+        return `<html xmlns="http://www.w3.org/1999/xhtml">
       ${this.getHeadContent()}
       ${this.getBodyContent()}
       </html>`
-  }
+    }
 
-  getBodyContent() {
+    getSections() {
+        return this.email.sections.map((section) => {
+            return `<tr>
+                        <td class="innerpadding borderbottom" style="border-bottom-width: 1px; border-bottom-color: #f2eeed; border-bottom-style: solid; padding: 30px;">
+                            <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td class="h3" style="color: ${this.email.colors.primary}; font-family: sans-serif; font-size: 20px; line-height: 24px; font-weight: bold; padding: 0 0 5px;">
+                                        ${section.heading}
+                                    </td>
+                                </tr>
+                            </table>
+                            <table width="115" align="left" border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td height="115" style="padding: 0 20px 20px 0;">
+                                        <img src="${section.img}" width="115" height="115" border="0" alt="article" style="height: auto;"/>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--[if (gte mso 9)|(IE)]>
+      <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td>
+    <![endif]-->
+                            <table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 380px !important; max-width: 380px;">
+                                <tr>
+                                    <td>
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                            <tr>
+                                                <td class="bodycopy" style="color:${this.email.colors.ninth}; font-family: sans-serif; font-size: 16px; line-height: 22px;">
+                                                    ${section.text}
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 20px 0 0 0;">
+                                                    <table class="buttonwrapper" align="right" bgcolor="${this.email.colors.sixth}" border="0" cellspacing="0" cellpadding="0" style="background-color: ${this.email.colors.sixth}">
+                                                        <tr>
+                                                            <td class="button" height="35" align="center" style="text-align: center; font-size: 14px; font-family: sans-serif; font-weight: bold; padding: 0 30px;">
+                                                                <a href="${section.link}" style="color: #ffffff; text-decoration: none; display: block !important; padding: 15px 15px 13px;">${section.button}</a>
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!--[if (gte mso 9)|(IE)]>
+          </td>
+        </tr>
+    </table>
+    <![endif]-->
+                        </td>
+                    </tr>`; 
+        });
+    }
 
-    return `<body yahoo bgcolor="#f6f8f1">
-    <table width="100%" bgcolor="#f7ffff" border="0" cellpadding="0" cellspacing="0">
-        <!-- original: f6f8f1-->
+    getBodyContent() {
+
+        return `<body yahoo style="min-width: 100% !important; margin: 0; padding: 0;">
+    <table width="100%" bgcolor="${this.email.colors.fifth}" border="0" cellpadding="0" cellspacing="0" style="background-color:${this.email.colors.fifth}">
         <tr>
             <td>
                 <!--[if (gte mso 9)|(IE)]>
@@ -212,27 +116,26 @@ export class EmailTemplateComponent {
     <tr>
         <td>
             <![endif]-->
-                <table class="content" align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
+                <table class="content" align="center" cellpadding="0" cellspacing="0" border="0" bgcolor="${this.email.colors.third}" style="width: 600px !important; max-width: 600px;" style="background-color:${this.email.colors.third}">
                     <tr>
-                        <td class="header" bgcolor="#6DBBEF">
-                            <!--original: 51A0D5 -->
+                        <td class="header" bgcolor="${this.email.colors.fourth}" style="padding: 20px 30px;" style="background-color:${this.email.colors.fourth}">
 
                             <!--[if (gte mso 9)|(IE)]>
 <table width="425" align="left" cellpadding="0" cellspacing="0" border="0">
     <tr>
         <td>
         <![endif]-->
-                            <table class="col275" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 275px;">
+                            <table class="col275" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 275px !important; max-width: 275px;">
                                 <tr>
                                     <td height="70">
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                                        <table width="100%" border="0" cellspacing="0" cellpadding="0" >
                                             <tr>
-                                                <td class="subhead" style="padding: 0 0 0 3px;">
+                                                <td class="subhead" style="font-size: 15px; color: ${this.email.colors.secondary}; font-family: sans-serif; letter-spacing: 10px; padding: 0 0 0 3px;">
                                                     ${this.email.general.subheading}
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td class="h1" style="padding: 5px 0 0 0;">
+                                                <td class="h1" style="font-size: 33px; line-height: 38px; font-weight: bold; color: ${this.email.colors.primary}; font-family: sans-serif; padding: 5px 0 0;">
                                                     ${this.email.general.heading}
                                                 </td>
                                             </tr>
@@ -248,7 +151,7 @@ export class EmailTemplateComponent {
                             <table width="220" align="right" border="0" cellpadding="0" cellspacing="0">
                                 <tr>
                                     <td height="70" style="padding: 0 0px 20px 0;">
-                                        <img src="Logo-Bethanien-RGB.png" width="220" height="90" border="0" alt="bild" />
+                                        <img src="${this.email.general.logo}" width="210" height="90" border="0" alt="bild" style="height: auto;" />
                                     </td>
                                 </tr>
                             </table>
@@ -257,322 +160,44 @@ export class EmailTemplateComponent {
                     </tr>
 
                     <tr>
-                        <td class="innerpadding borderbottom">
+                        <td class="innerpadding borderbottom" style="border-bottom-width: 1px; border-bottom-color: #f2eeed; border-bottom-style: solid; padding: 30px;">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td class="h2">
-                                        Aus der Arbeit der Bethanien Diakonissen-Stiftung
+                                    <td class="h2" style="color: ${this.email.colors.primary}; font-family: sans-serif; font-size: 24px; line-height: 28px; font-weight: bold; padding: 0 0 15px;">
+                                        ${this.email.introduction.heading}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="bodycopy">
-                                        Dies sind die Neuigkeiten im November 2015
+                                    <td class="bodycopy" style="color:${this.email.colors.ninth}; font-family: sans-serif; font-size: 16px; line-height: 22px;">
+                                        ${this.email.introduction.text}
                                     </td>
                                 </tr>
                             </table>
                         </td>
                     </tr>
 
+                    ${this.getSections()}
 
                     <tr>
-                        <td class="innerpadding borderbottom">
-                            <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td class="h3">
-                                        Personen
-                                    </td>
-                                </tr>
-                            </table>
-                            <table width="115" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td height="115" style="padding: 0 20px 20px 0;">
-                                        <img src="article1.jpg" width="115" height="115" border="0" alt="article" />
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-      <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td>
-    <![endif]-->
-                            <table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 380px;">
-                                <tr>
-                                    <td>
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td class="bodycopy">
-                                                    <ul style="-webkit-margin-before:0;">
-                                                        <li>In Hamburg feierten am 25.10. Sr. Gertrud Hilpmann 80-jähriges Dienstjubiläum, Sr. Efriede Harders 70-jähriges, Sr. Sieglinde Richter 60-jähriges.</li>
-                                                        <li>Helmut Rothfuß wurde als pastoraler Direktor am 24.9. in Stuttgart eingeführt.</li>
-                                                        <li>Kerstin Hartmann wurde als Seelsorgerin am 6.10. im Haus Radeland, Berlin eingeführt.</li>
-                                                    </ul>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 20px 0 0 0;">
-                                                    <table class="buttonwrapper" align="right" bgcolor="#ADACB2" border="0" cellspacing="0" cellpadding="0">
-                                                        <!-- original: e05443-->
-                                                        <tr>
-                                                            <td class="button" height="35">
-                                                                <a href="http://www.bethanien-stiftung.de/85-0-Aktuelles.html?news=27">Hier weiterlesen...</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-          </td>
-        </tr>
-    </table>
-    <![endif]-->
+                        <td class="innerpadding borderbottom bodycopy" style="color:${this.email.colors.ninth};font-family: sans-serif; border-bottom-width: 1px; border-bottom-color: #f2eeed; border-bottom-style: solid; font-size: 16px; line-height: 22px; padding: 30px;">
+                            ${this.email.bottom.text}
                         </td>
                     </tr>
 
                     <tr>
-                        <td class="innerpadding borderbottom">
-                            <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td class="h3">
-                                        Bethanien-Höfe Eppendorf
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table width="115" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td height="115" style="padding: 0 20px 20px 0;">
-                                        <img src="article2.jpg" width="115" height="115" border="0" alt="article" />
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-      <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td>
-    <![endif]-->
-                            <table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 380px;">
-                                <tr>
-                                    <td>
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td class="bodycopy">
-                                                    Die Bethanien-Höfe Eppendorf mit neuem Mutterhaus, Seniorenresidenz, Pflegeheim und Gemeinde wurde am 7.9. von Bischöfin Rosemarie Wenner zusammen mit den Verantwortlichen von Bethanien feierlich eingeweiht.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 20px 0 0 0;">
-                                                    <table class="buttonwrapper" align="right" bgcolor="#ADACB2" border="0" cellspacing="0" cellpadding="0">
-                                                        <!-- original: e05443-->
-                                                        <tr>
-                                                            <td class="button" height="35">
-                                                                <a href="http://www.bethanien-stiftung.de/85-0-Aktuelles.html?news=20">Hier weiterlesen...</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-          </td>
-        </tr>
-    </table>
-    <![endif]-->
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="innerpadding borderbottom">
-                            <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td class="h3">
-                                        basement 26
-                                    </td>
-                                </tr>
-                            </table>
-
-                            <table width="115" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td height="115" style="padding: 0 20px 20px 0;">
-                                        <img src="article3.jpg" width="115" height="115" border="0" alt="article" />
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-      <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td>
-    <![endif]-->
-                            <table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 380px;">
-                                <tr>
-                                    <td>
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td class="bodycopy">
-                                                    Jugendliche Flüchtlinge nehmen das Angebot wahr, sich im „basement 26“, Kinder- und Jugendeinrichtung in Frankfurt, sportlich zu betätigen, zu entspannen sowie erste Deutschkenntnisse zu erwerben.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 20px 0 0 0;">
-                                                    <table class="buttonwrapper" align="right" bgcolor="#ADACB2" border="0" cellspacing="0" cellpadding="0">
-                                                        <!-- original: e05443-->
-                                                        <tr>
-                                                            <td class="button" height="35">
-                                                                <a href="http://www.bethanien-stiftung.de/85-0-Aktuelles.html?news=26">Hier weiterlesen...</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-          </td>
-        </tr>
-    </table>
-    <![endif]-->
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="innerpadding borderbottom">
-                            <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td class="h3">
-                                        Bethesda-Kindertagesstätte
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <table width="115" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td height="115" style="padding: 0 20px 20px 0;">
-                                        <img src="article3.jpg" width="115" height="115" border="0" alt="article" />
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-      <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td>
-    <![endif]-->
-                            <table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 380px;">
-                                <tr>
-                                    <td>
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td class="bodycopy">
-                                                    Zum neuen Kindergartenjahr ging die Trägerschaft an der Bethesda-Kindertagesstätte in Wuppertal auf die Bethanien Diakonissen-Stiftung über. In der Bethesda-Kita werden 80 Kinder in 4 Gruppen betreut.
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 20px 0 0 0;">
-                                                    <table class="buttonwrapper" align="right" bgcolor="#ADACB2" border="0" cellspacing="0" cellpadding="0">
-                                                        <!-- original: e05443-->
-                                                        <tr>
-                                                            <td class="button" height="35">
-                                                                <a href="http://www.bethanien-stiftung.de/85-0-Aktuelles.html?news=26">Hier weiterlesen...</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-          </td>
-        </tr>
-    </table>
-    <![endif]-->
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="innerpadding borderbottom">
-                            <table width="100%" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td class="h3">
-                                        Sternkinderambulanz Wuppertal
-                                    </td>
-                                </tr>
-                            </table>
-                            
-                            <table width="115" align="left" border="0" cellpadding="0" cellspacing="0">
-                                <tr>
-                                    <td height="115" style="padding: 0 20px 20px 0;">
-                                        <img src="article5.jpg" width="115" height="115" border="0" alt="article" />
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-      <table width="380" align="left" cellpadding="0" cellspacing="0" border="0">
-        <tr>
-          <td>
-    <![endif]-->
-                            <table class="col380" align="left" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 380px;">
-                                <tr>
-                                    <td>
-                                        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-                                            <tr>
-                                                <td class="bodycopy">
-                                                    Die Sternenkinderambulanz Wuppertal wurde zum 1.10.2015 in die Trägerschaft der Bethanien Diakonissen-Stiftung übertragen, um sie langfristig zu sichern. Frau Spilker und Herr Woithe leiten diese wichtige Einrichtung für trauernde Eltern, die ihr Kind vor, während oder kurz nach der Geburt verloren haben.
-
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td style="padding: 20px 0 0 0;">
-                                                    <table class="buttonwrapper" align="right" bgcolor="#ADACB2" border="0" cellspacing="0" cellpadding="0">
-                                                        <!-- original: e05443-->
-                                                        <tr>
-                                                            <td class="button" height="35">
-                                                                <a href="http://www.bethanien-stiftung.de/85-0-Aktuelles.html?news=28">Hier weiterlesen...</a>
-                                                            </td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--[if (gte mso 9)|(IE)]>
-          </td>
-        </tr>
-    </table>
-    <![endif]-->
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="innerpadding borderbottom bodycopy">
-                            Möchten Sie keine weiteren Neuigkeiten über die Arbeit der Bethanien Diakonissen-Stiftung erhalten? Dann klicken Sie bitte unten auf den Abmeldebutton.
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="footer" bgcolor="#44525f">
+                        <td class="footer" bgcolor="${this.email.colors.seventh}" style="padding: 20px 30px 15px;background-color:${this.email.colors.seventh}">
                             <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                 <tr>
-                                    <td align="center" class="footercopy">
-                                        <a href="#" class="unsubscribe">
-                                            <font color="#ffffff">Abmelden</font>
+                                    <td align="center" class="footercopy" style="font-family: sans-serif; font-size: 14px; color: #ffffff;">
+                                        <a href="${this.email.bottom.link}" class="unsubscribe" bgcolor="${this.email.colors.eighth}" style="color: #ffffff; text-decoration: none !important; display: block; margin-top: 20px; border-radius: 5px; font-weight: bold; width: 70px; background-color: ${this.email.colors.eighth}; padding: 10px 50px;">
+                                            <font color="#ffffff">${this.email.bottom.unsubscribe}</font>
+                                            <span class="hide" style="display: none !important;">from this newsletter instantly</span>
                                         </a>
-                                        <span class="hide">from this newsletter instantly</span>
-                                        <p><b>Bethanien Diakonissen-Stiftung</b></p>
-                                        <p>Dielmannstr. 26</p>
-                                        <p>60599 Frankfurt am Main</p>
-                                        <p><a href="www.bethanien-stiftung.de">www.bethanien-stiftung.de</a></p>
-                                        <p>Vorstand: Dr. Lothar Elsner (Theol. Vorstand), Uwe M. Junga (Kaufm.Vorstand); Vorsitzender des Stiftungsrats: Christian Voller-Morgenstern</p>
+                                        <p><b>${this.email.imprint.company}</b></p>
+                                        <p>${this.email.imprint.street}</p>
+                                        <p>${this.email.imprint.city}</p>
+                                        <p><a href="${this.email.imprint.website}" style="color: #ffffff; text-decoration: underline;">${this.email.imprint.website}</a></p>
+                                        <p>${this.email.imprint.responsibilities}</p>
 
                                     </td>
                                 </tr>
@@ -591,6 +216,6 @@ export class EmailTemplateComponent {
         </tr>
     </table>
 </body>`;
-  }
+    }
 
 }

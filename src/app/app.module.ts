@@ -5,6 +5,8 @@ import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
 import { MaterialModule } from '@angular/material';
+import { ColorPickerModule } from 'angular2-color-picker';
+import { ClipboardModule }  from 'angular2-clipboard';
 
 /*
  * Platform and Environment providers/directives/pipes
@@ -53,7 +55,9 @@ type StoreType = {
     FormsModule,
     HttpModule,
     /*RouterModule.forRoot(ROUTES, { useHash: true }),*/
-    MaterialModule.forRoot()
+    MaterialModule.forRoot(),
+    ColorPickerModule,
+    ClipboardModule
   ],
   providers: [ // expose our Services and Providers into Angular's dependency injection
     ENV_PROVIDERS,

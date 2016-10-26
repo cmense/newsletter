@@ -1,14 +1,5 @@
-/*
- * Angular 2 decorators and services
- */
 import { Component, ViewEncapsulation } from '@angular/core';
 
-import { AppState } from './app.service';
-
-/*
- * App Component
- * Top Level Component
- */
 @Component({
   selector: 'app',
   encapsulation: ViewEncapsulation.None,
@@ -21,12 +12,9 @@ export class AppComponent {
   name = 'Newsletter Generator';
   url = 'https://github.com/delsner/newsletter';
 
-  constructor(public appState: AppState) {
-
+  constructor() {
   }
 
   ngOnInit() {
-    console.log('Initial App State', this.appState.state);
   }
-
 }

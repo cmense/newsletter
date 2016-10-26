@@ -1,58 +1,143 @@
-<!--<div class="card-container">
-  <h1 x-large class="sample-content">Your Content Here</h1>
-
-  <div>
-    For material design components use the <a href="https://github.com/AngularClass/angular2-webpack-starter/tree/material2"><b>material2</b></a> branch
-  </div>
-
-  <hr>
-
-  <div>
-    For hot module reloading run
-    <pre>npm run start:hmr</pre>
-  </div>
-
-  <hr>
-
-  <div>
-    <h4>Local State</h4>
-
-    <form (ngSubmit)="submitState(localState.value)" autocomplete="off">
-
-      <input
-        [value]="localState.value"
-        (input)="localState.value = $event.target.value"
-        placeholder="Submit Local State to App State"
-        autofocus>
-
-      <button md-raised-button color="primary">Submit Value</button>
-    </form>
-    <pre>this.localState = {{ localState | json }}</pre>
-
-  </div>
-
-</div>
--->
-
 <div class="container" layout="row" flex>
 	<div flex="40" layout="column">
 		<md-card id="inputs">
+
+			<!--META-->
+			<md-card-title>Meta Section</md-card-title>
+			<md-card-content layout="column">
+				<md-input placeholder="Heading" [(ngModel)]="email.meta.heading"></md-input>
+			</md-card-content>
+
+			<!--GENERAL-->
 			<md-card-title>General Section</md-card-title>
 			<md-card-content layout="column">
 				<md-input placeholder="Heading" [(ngModel)]="email.general.heading"></md-input>
 				<md-input placeholder="Subheading" [(ngModel)]="email.general.subheading"></md-input>
-				<md-input placeholder="Logo-Link"></md-input>
+				<div layout="row" class="img-preview">
+					<img [src]="email.general.logo" alt="logo">
+					<md-input placeholder="Logo-Link" [(ngModel)]="email.general.logo" flex></md-input>
+				</div>
 			</md-card-content>
 
+			<!--COLORS-->
+			<md-card-title>Color Palette</md-card-title>
+			<md-card-content layout="column">
+				<div layout="row">
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.primary" class="color-square">
+							<p [style.color]="email.colors.primary">Primary</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.primary" [value]="email.colors.primary"></md-input>
+					</div>
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.secondary" class="color-square">
+							<p [style.color]="email.colors.secondary">Secondary</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.secondary" [value]="email.colors.secondary"></md-input>
+					</div>
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.third" class="color-square">
+							<p [style.color]="email.colors.third">Third</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.third" [value]="email.colors.third"></md-input>
+					</div>
+				</div>
+
+				<div layout="row">
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.fourth" class="color-square">
+							<p [style.color]="email.colors.fourth">Fourth</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.fourth" [value]="email.colors.fourth"></md-input>
+					</div>
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.fifth" class="color-square">
+							<p [style.color]="email.colors.fifth">Fifth</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.fifth" [value]="email.colors.fifth"></md-input>
+					</div>
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.sixth" class="color-square">
+							<p [style.color]="email.colors.sixth">Sixth</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.sixth" [value]="email.colors.sixth"></md-input>
+					</div>
+				</div>
+
+				<div layout="row">
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.seventh" class="color-square">
+							<p [style.color]="email.colors.seventh">Seventh</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.seventh" [value]="email.colors.seventh"></md-input>
+					</div>
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.eighth" class="color-square">
+							<p [style.color]="email.colors.eighth">Eighth</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.eighth" [value]="email.colors.eighth"></md-input>
+					</div>
+					<div layout="row" class="color-palette">
+						<div [style.background]="email.colors.ninth" class="color-square">
+							<p [style.color]="email.colors.ninth">Ninth</p>
+						</div>
+						<md-input [(colorPicker)]="email.colors.ninth" [value]="email.colors.ninth"></md-input>
+					</div>
+					
+				</div>
+			</md-card-content>
+
+			<!--INTRODUCTION-->
 			<md-card-title>Introduction</md-card-title>
-			<md-card-content>
-				<md-input placeholder="Heading"></md-input>
+			<md-card-content layout="column">
+				<md-input placeholder="Heading" [(ngModel)]="email.introduction.heading"></md-input>
+				<md-input placeholder="Text" [(ngModel)]="email.introduction.text"></md-input>
+			</md-card-content>
+
+			<!--STORIES-->
+			<md-card-title>Sections</md-card-title>
+			<div layout="row" class="section-action-buttons">
+				<button color="primary" (click)="addSection()">Add</button>
+				<button color="warn" (click)="removeSection()">Remove</button>
+			</div>
+			<md-card-content layout="column">
+				<div *ngFor="let section of email.sections;let i = index" layout="column">
+					<h4>Section {{i+1}}</h4>
+					<md-input placeholder="Heading" [(ngModel)]="section.heading"></md-input>
+					<md-input placeholder="Text" [(ngModel)]="section.text"></md-input>
+					<div layout="row" class="img-preview">
+						<img [src]="section.img" alt="logo">
+						<md-input placeholder="Picture Link" [(ngModel)]="section.img" flex></md-input>
+					</div>
+					<md-input placeholder="Button Text" [(ngModel)]="section.button"></md-input>
+					<md-input placeholder="Button Link" [(ngModel)]="section.link"></md-input>
+				</div>
+			</md-card-content>
+
+			<!--BOTTOM MESSAGE-->
+			<md-card-title>Bottom</md-card-title>
+			<md-card-content layout="column">
+				<md-input placeholder="Text" [(ngModel)]="email.bottom.text"></md-input>
+				<md-input placeholder="Unsubscribe" [(ngModel)]="email.bottom.unsubscribe"></md-input>
+				<md-input placeholder="Unsubscribe Link" [(ngModel)]="email.bottom.link"></md-input>
+			</md-card-content>
+
+			<!--IMPRINT-->
+			<md-card-title>Imprint</md-card-title>
+			<md-card-content layout="column">
+				<md-input placeholder="Company" [(ngModel)]="email.imprint.company"></md-input>
+				<md-input placeholder="Street" [(ngModel)]="email.imprint.street"></md-input>
+				<md-input placeholder="City" [(ngModel)]="email.imprint.city"></md-input>
+				<md-input placeholder="Website" [(ngModel)]="email.imprint.website"></md-input>
+				<md-input placeholder="Responsibilities" [(ngModel)]="email.imprint.responsibilities"></md-input>
 			</md-card-content>
 		</md-card>
+
 	</div>
-	<div flex="60">
-		<md-card>
+	<div flex="60" layout="column">
+		<md-card id="preview">
 			<md-card-title>Preview</md-card-title>
+			<md-card-subtitle>To get the code please scroll down.</md-card-subtitle>
 			<md-card-content>
 				<email-template [email]="email"></email-template>
 			</md-card-content>
