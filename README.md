@@ -7,7 +7,7 @@ Free, simple Newsletter Generator for creating nice Newsletter within minutes. S
 Have fun with it.
 ___
 
-## Usage
+## Get Started
 
 <p align="center">
   <a href="https://delsner.github.io/newsletter" target="_blank">
